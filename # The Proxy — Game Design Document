@@ -1,0 +1,54 @@
+# The Proxy — Game Design Document
+
+## Narrative Structure
+
+- **Scene-based branching**: Player choices drive the story and stats.
+- **Stats**: Trust, Identity, Control. Choices may increase or decrease these values.
+- **Inventory**: Key items (e.g., "Data Analysis Tools") can be collected.
+
+## Scenes
+
+- Each scene has:
+  - `id`: Unique identifier
+  - `text`: HTML-formatted narrative content (can include dialogue, code blocks)
+  - `choices`: Array of choices:
+    - `text`: Display text
+    - `action`: Next scene id
+    - `stats`: (Optional) Object of stat changes
+    - `inventory`: (Optional) Array of inventory items to add
+
+## Endings
+
+- Multiple possible endings based on late-game choices and stats.
+- Endings can display final stats and a short epilogue.
+
+## Stats
+
+- **Trust**: How much you trust others/the system.
+- **Identity**: Your sense of self.
+- **Control**: Your agency/power over events.
+
+## JSON Data Example
+
+```json
+{
+  "id": "test-assistant",
+  "text": "You ask the AI about your childhood fear of mirrors...",
+  "choices": [
+    {
+      "text": "Share with the world",
+      "action": "share-public",
+      "stats": { "trust": 10, "control": -20 }
+    }
+  ]
+}
+```
+
+## Extensibility & Best Practices
+
+- **Separate content from logic**: All narrative data in a JSON file.
+- **Modular code**: Logic, style, and data in separate files.
+- **Clear file/folder naming**: For easy onboarding.
+- **Version control**: All progress tracked in git.
+
+---
