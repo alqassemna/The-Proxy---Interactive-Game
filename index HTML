@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Proxy - Interactive Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="src/css/style.css">
+</head>
+<body>
+  <div class="game-container">
+    <h1 class="glitch-title">🪞 THE PROXY</h1>
+    <div class="stats-panel">
+      <div class="stat">
+        <span>Trust:</span>
+        <div class="stat-bar">
+          <div class="stat-fill" id="trust-bar" style="width: 50%"></div>
+        </div>
+      </div>
+      <div class="stat">
+        <span>Identity:</span>
+        <div class="stat-bar">
+          <div class="stat-fill" id="identity-bar" style="width: 100%"></div>
+        </div>
+      </div>
+      <div class="stat">
+        <span>Control:</span>
+        <div class="stat-bar">
+          <div class="stat-fill" id="control-bar" style="width: 80%"></div>
+        </div>
+      </div>
+      <div class="inventory">
+        <strong>Inventory:</strong>
+        <div id="inventory-list"></div>
+      </div>
+    </div>
+    <div class="story-screen" id="game-screen">
+      <div class="story-text" id="story-text"></div>
+      <div class="choices" id="choices"></div>
+    </div>
+  </div>
+  <script type="module" src="src/js/main.js"></script>
+</body>
+</html>
