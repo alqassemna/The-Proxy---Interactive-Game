@@ -1,0 +1,97 @@
+import scenesData from '../data/scenes.json' assert { type: 'json' };
+
+let gameState = {
+  trust: 50,
+  identity: 100,
+  control: 80,
+  inventory: [],
+  currentScene: 'start',
+  choices: []
+};
+
+function updateStats(changes) {
+  if (changes.trust) {
+    gameState.trust = Math.max(0, Math.min(100, gameState.trust + changes.trust));
+    document.getElementById('trust-bar').style.width = gameState.trust + '%';
+  }
+  if (changes.identity) {
+    gameState.identity = Math.max(0, Math.min(100, gameState.identity + changes.identity));
+    document.getElementById('identity-bar').style.width = gameState.identity + '%';
+  }
+  if (changes.control) {
+    gameState.control = Math.max(0, Math.min(100, gameState.control + changes.control));
+    document.getElementById('control-bar').style.width = gameState.control + '%';
+  }
+}
+
+function updateInventory(newItems) {
+  const inventoryList = document.getElementById('inventory-list');
+  newItems.forEach(item => {
+    if (!gameState.inventory.includes(item)) {
+      gameState.inventory.push(item);
+      const itemElement = document.createElement('div');
+      itemElement.className = 'inventory-item';
+      itemElement.textContent = item;
+      inventoryList.appendChild(itemElement);
+    }
+  });
+}
+
+function renderScene(sceneId) {
+  const scene = scenesData.find(s => s.id === sceneId);
+  gameState.currentScene = sceneId;
+  if (!scene) return;
+
+  document.getElementById('story-text').innerHTML = scene.text;
+  const choicesDiv = document.getElementById('choices');
+  choicesDiv.innerHTML = '';
+
+  if (scene.final) {
+    // Ending scene, no more choices
+    return;
+  }
+
+  scene.choices.forEach(choice => {
+    const button = document.createElement('button');
+    button.className = 'choice-btn';
+    button.textContent = choice.text;
+    button.onclick = () => {
+      if (choice.stats) updateStats(choice.stats);
+      if (choice.inventory) updateInventory(choice.inventory);
+      renderScene(choice.action);
+    };
+    choicesDiv.appendChild(button);
+  });
+}
+
+function restartGame() {
+  gameState = {
+    trust: 50,
+    identity: 100,
+    control: 80,
+    inventory: [],
+    currentScene: 'start',
+    choices: []
+  };
+  // Reset stats display
+  document.getElementById('trust-bar').style.width = '50%';
+  document.getElementById('identity-bar').style.width = '100%';
+  document.getElementById('control-bar').style.width = '80%';
+  // Clear inventory
+  document.getElementById('inventory-list').innerHTML = '';
+  renderScene('start');
+}
+
+window.restartGame = restartGame;
+
+window.onload = function() {
+  renderScene('start');
+  // Optional: Add atmosphere as in your original script
+  setTimeout(() => {
+    document.body.style.backgroundImage = `
+      radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+      linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)
+    `;
+  }, 1000);
+};
